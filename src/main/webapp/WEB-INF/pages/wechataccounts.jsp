@@ -115,19 +115,18 @@
                                                 </td>
                                                 <td>${wechatAccount.appId}</td>
                                                 <td>*******</td>
-                                                <td>
+                                                <td class="${wechatAccount.enabled? 'c-white' :''} ">
                                                     <c:if test="${wechatAccount.enabled}">Available</c:if>
                                                     <c:if test="${not wechatAccount.enabled}">Not available</c:if>
                                                 </td>
                                                 <td>
                                                     <ul class="pagination" style="margin: 0">
                                                         <li class="paginate_button next"><a href="/client/${client.guid}/wechat/${wechatAccount.guid}/edit">Edit</a></li>
-                                                        <li class="paginate_button"><a href="#">Delete</a></li>
                                                         <li class="paginate_button">
                                                             <c:if test="${wechatAccount.enabled}"><a
-                                                                    href="#">Disable</a></c:if>
+                                                                    href="/client/${client.guid}/wechat/${wechatAccount.guid}/updatestatus">Disable</a></c:if>
                                                             <c:if test="${not wechatAccount.enabled}"><a
-                                                                    href="#">Enable</a></c:if>
+                                                                    href="/client/${client.guid}/wechat/${wechatAccount.guid}/updatestatus">Enable</a></c:if>
                                                         </li>
                                                     </ul>
                                                 </td>

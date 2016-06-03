@@ -52,14 +52,18 @@ public class ClientFacade {
     }
 
 
-    public void update(ClientCommand clientCommand) {
+    public boolean update(ClientCommand clientCommand) {
         String guid = clientCommand.getGuid();
         Client client = clientRepository.findByGuid(guid);
         if(client == null){
             client = new Client();
         }
+        if(!StringUtils.hasText(clientCommand.getName())){
+            return false;
+        }
         client.changeName(clientCommand.getName());
         clientRepository.save(client);
+        return true;
     }
 
     public ClientCommand getWechatAccounts(String clientguid) {
@@ -76,9 +80,6 @@ public class ClientFacade {
         return new ClientCommand(client.getGuid(), client.getName(), wechatAccountCommands,client.isEnabled());
     }
 
-    public ClientsGroupCommand search(String client) {
-        return null;
-    }
 
     public WechatAccountCommand wechatAccount(String clientguid, String wechatguid) {
         Client client = clientRepository.findByGuid(clientguid);
@@ -105,14 +106,15 @@ public class ClientFacade {
         if(client == null){
             return null;
         }
+        if(!StringUtils.hasText(appId) || !StringUtils.hasText(appSecret)){
+            return null;
+        }
         WeChatAccount weChatAccount = client.getWeChatAccount(guid);
         if(weChatAccount == null){
             weChatAccount = new WeChatAccount();
             client.addWeChatAccount(weChatAccount);
         }
-        if(!StringUtils.hasText(appId) || !StringUtils.hasText(appSecret)){
-            return null;
-        }
+
         weChatAccount.initial(appId,appSecret);
         try {
             weChatAccount.changeAccountType(AccountType.valueOf(accountType));
@@ -123,5 +125,22 @@ public class ClientFacade {
 
         return clientGuid;
 
+    }
+
+    public void updateWechatAccountStatus(String clientguid, String wechatguid) {
+        Client client = clientRepository.findByGuid(clientguid);
+        if(client!=null){
+            WeChatAccount weChatAccount = client.getWeChatAccount(wechatguid);
+            if(weChatAccount != null){
+                weChatAccount.updateStatus();
+            }
+        }
+    }
+
+    public void updateClientStatus(String clientguid) {
+        Client client = clientRepository.findByGuid(clientguid);
+        if(client!=null){
+            client.updateStatus();
+        }
     }
 }

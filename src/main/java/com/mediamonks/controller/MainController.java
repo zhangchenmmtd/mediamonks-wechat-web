@@ -4,6 +4,7 @@ import com.mediamonks.controller.command.ClientCommand;
 import com.mediamonks.controller.command.WechatAccountCommand;
 import com.mediamonks.controller.facade.ClientFacade;
 import com.mediamonks.domain.AccountType;
+import com.mediamonks.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,11 +28,10 @@ public class MainController {
         model.addAttribute("clients", clientFacade.getAll(pageNumber));
         return "home";
     }
-
-    @RequestMapping(value = "/search/{client}", method = RequestMethod.GET)
-    public String search(Model model, @PathVariable(value = "client") String client){
-        model.addAttribute("client", clientFacade.search(client));
-        return "home";
+    @RequestMapping(value = "/client/{clientguid}/updatestatus", method = RequestMethod.GET)
+    public String updateClientStatus(@PathVariable(value = "clientguid") String clientguid){
+        clientFacade.updateClientStatus(clientguid);
+        return "redirect:/";
     }
     @RequestMapping(value = "/client/{clientguid}/edit", method = RequestMethod.GET)
     public String addClient(Model model, @PathVariable(value = "clientguid") String clientguid){
@@ -39,12 +39,20 @@ public class MainController {
         return "clientform";
     }
     @RequestMapping(value = "/client/update", method = RequestMethod.POST)
-    public String updateClient(ClientCommand clientCommand){
-        clientFacade.update(clientCommand);
+    public String updateClient(Model model,ClientCommand clientCommand){
+        if(!clientFacade.update(clientCommand)){
+            model.addAttribute("client", clientCommand);
+            model.addAttribute("error", "Something is wrong, please make sure you fill in everything");
+            return "clientform";
+        }
         return "redirect:/";
     }
 
-
+    @RequestMapping(value = "/client/{clientguid}/wechat/{wechatguid}/updatestatus", method = RequestMethod.GET)
+    public String updateStatus(Model model,@PathVariable(value = "clientguid") String clientguid,@PathVariable(value = "wechatguid") String wechatguid){
+        clientFacade.updateWechatAccountStatus(clientguid, wechatguid);
+        return "redirect:/client/"+clientguid+"/wechataccounts";
+    }
     @RequestMapping(value = "/client/{clientguid}/wechataccounts", method = RequestMethod.GET)
     public String wechatAccounts(Model model,@PathVariable(value = "clientguid") String clientguid){
         model.addAttribute("client", clientFacade.getWechatAccounts(clientguid));
@@ -59,8 +67,14 @@ public class MainController {
     }
 
     @RequestMapping(value = "/client/wechat//update", method = RequestMethod.POST)
-    public String updateWechat(WechatAccountCommand wechatAccountCommand){
+    public String updateWechat(Model model,WechatAccountCommand wechatAccountCommand){
         String clientGuid = clientFacade.updateWechatAccount(wechatAccountCommand);
+        if(!StringUtils.hasText(clientGuid)){
+            model.addAttribute("wechatAccount", wechatAccountCommand);
+            model.addAttribute("accountTypes", AccountType.values());
+            model.addAttribute("error", "Something is wrong, please make sure you fill in everything");
+            return "wechataccountform";
+        }
         return "redirect:/client/"+clientGuid+"/wechataccounts";
     }
 }

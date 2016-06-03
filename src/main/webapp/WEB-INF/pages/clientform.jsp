@@ -18,7 +18,11 @@
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-
+<c:if test="${not empty error}">
+    <script>
+        alert('${error}');
+    </script>
+</c:if>
 <div class="wrapper">
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container-fluid">

@@ -35,18 +35,6 @@
                     Mediamonks
                 </a>
             </div>
-            <div id="navbar" class="navbar-collapse collapse">
-                <form class="navbar-form navbar-left" action="/">
-                    <input type="text" class="form-control" placeholder="Search client" style="width: 175px">
-                </form>
-                <ul class="nav navbar-nav navbar-right">
-                    <li class=" profil-link">
-                        <a href="/logout">
-                            <span class="profile-address">Logout</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
         </div>
     </nav>
     <aside class="navigation">
@@ -118,7 +106,7 @@
                                         <c:forEach items="${clients.clientCommands}" var="client">
                                             <tr role="row" class="odd">
                                                 <td>${client.name}</td>
-                                                <td>
+                                                <td class="${client.enabled? 'c-white' :''}">
                                                     <c:if test="${client.enabled}">Available</c:if>
                                                     <c:if test="${not client.enabled}">Not available</c:if>
                                                 </td>
@@ -131,9 +119,9 @@
                                                         </li>
                                                         <li class="paginate_button">
                                                             <c:if test="${client.enabled}"><a
-                                                                    href="#">Disable</a></c:if>
+                                                                    href="/client/${client.guid}/updatestatus">Disable</a></c:if>
                                                             <c:if test="${not client.enabled}"><a
-                                                                    href="#">Enable</a></c:if>
+                                                                    href="/client/${client.guid}/updatestatus">Enable</a></c:if>
                                                         </li>
                                                     </ul>
                                                 </td>
