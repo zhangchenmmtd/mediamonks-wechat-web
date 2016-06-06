@@ -35,9 +35,6 @@
                 </a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
-                <form class="navbar-form navbar-left" action="/">
-                    <input type="text" class="form-control" placeholder="Search client" style="width: 175px">
-                </form>
                 <ul class="nav navbar-nav navbar-right">
                     <li class=" profil-link">
                         <a href="/logout">
