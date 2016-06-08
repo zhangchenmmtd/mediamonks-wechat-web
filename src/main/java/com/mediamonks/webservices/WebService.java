@@ -4,10 +4,7 @@ package com.mediamonks.webservices;
 import com.mediamonks.service.WechatService;
 import com.mediamonks.webservices.command.JSONResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -22,8 +19,8 @@ public class WebService {
     private WechatService wechatService;
 
     @RequestMapping("/jsapi_config")
-    JSONResponse jsapiConfig(@RequestParam String url, String wechatid) {
-        return wechatService.jsapiConfig(url, wechatid);
+    JSONResponse jsapiConfig(@RequestParam String data) {
+        return wechatService.jsapiConfig(data);
     }
 
     @RequestMapping("/incomingmessage")
