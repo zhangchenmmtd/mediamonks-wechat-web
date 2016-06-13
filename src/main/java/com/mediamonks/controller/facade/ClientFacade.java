@@ -89,7 +89,17 @@ public class ClientFacade {
             wechatAccountCommand.setClientGuid(clientguid);
             return wechatAccountCommand;
         }
-        WechatAccountCommand wechatAccountCommand = new WechatAccountCommand(weChatAccount.getAppId(), weChatAccount.getAppSecret(), weChatAccount.getAccountType(), weChatAccount.getGuid(), weChatAccount.isEnabled());
+        WechatAccountCommand wechatAccountCommand = new WechatAccountCommand(
+                weChatAccount.getGuid(),
+                weChatAccount.getAppId(),
+                weChatAccount.getAppSecret(),
+                weChatAccount.getAccessTokenUrl(),
+                weChatAccount.getJsSDKTicketUrl(),
+                weChatAccount.getClientServerID(),
+                weChatAccount.getClientServerSecrect(),
+                weChatAccount.getAccountType().getAccountName(),
+                weChatAccount.isEnabled()
+        );
         wechatAccountCommand.setClientGuid(clientguid);
         return wechatAccountCommand;
 
@@ -101,6 +111,10 @@ public class ClientFacade {
         String appId = wechatAccountCommand.getAppId();
         String appSecret = wechatAccountCommand.getAppSecret();
         String clientGuid = wechatAccountCommand.getClientGuid();
+        String accessTokenUrl = wechatAccountCommand.getAccessTokenUrl();
+        String jsSDKTicketUrl = wechatAccountCommand.getJsSDKTicketUrl();
+        String clientServerID = wechatAccountCommand.getClientServerID();
+        String clientServerSecrect = wechatAccountCommand.getClientServerSecrect();
 
         Client client = clientRepository.findByGuid(clientGuid);
         if(client == null){
@@ -116,6 +130,8 @@ public class ClientFacade {
         }
 
         weChatAccount.initial(appId,appSecret);
+        weChatAccount.changeClientServerInfo(clientServerID, clientServerSecrect);
+        weChatAccount.changeUrls(accessTokenUrl, jsSDKTicketUrl);
         try {
             weChatAccount.changeAccountType(AccountType.valueOf(accountType));
         } catch (IllegalArgumentException e) {

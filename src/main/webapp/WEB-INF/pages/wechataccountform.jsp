@@ -96,6 +96,26 @@
                                            value="${wechatAccount.appSecret}">
                                 </div>
                                 <div class="form-group">
+                                    <label>Client server App ID</label>
+                                    <input type="text" class="form-control" placeholder="Client server App ID" name="clientServerID"
+                                           value="${wechatAccount.clientServerID}">
+                                </div>
+                                <div class="form-group">
+                                    <label>Client server App Secret</label>
+                                    <input type="text" class="form-control" placeholder="Client server App Secret" name="clientServerSecrect"
+                                           value="${wechatAccount.clientServerSecrect}">
+                                </div>
+                                <div class="form-group">
+                                    <label>Access token URL</label>
+                                    <input type="text" class="form-control" placeholder="Leave empty if using wechat default url" name="accessTokenUrl"
+                                           value="${wechatAccount.accessTokenUrl}">
+                                </div>
+                                <div class="form-group">
+                                    <label>JS SDK Ticket URL</label>
+                                    <input type="text" class="form-control" placeholder="Leave empty if using wechat default url" name="jsSDKTicketUrl"
+                                           value="${wechatAccount.jsSDKTicketUrl}">
+                                </div>
+                                <div class="form-group">
                                     <label>Account type</label>
                                     <select name="accountType">
                                         <c:forEach items="${accountTypes}" var="accountType">

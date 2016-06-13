@@ -9,6 +9,10 @@ public class WechatAccountCommand {
     private String guid;
     private String appId;
     private String appSecret;
+    private String accessTokenUrl;
+    private String jsSDKTicketUrl;
+    private String clientServerID;
+    private String clientServerSecrect;
     private String accountType;
     private boolean enabled;
 
@@ -24,6 +28,19 @@ public class WechatAccountCommand {
         this.appSecret = appSecret;
         this.accountType = accountType.getAccountName();
         this.guid = guid;
+        this.enabled = enabled;
+    }
+
+
+    public WechatAccountCommand(String guid, String appId, String appSecret, String accessTokenUrl, String jsSDKTicketUrl, String clientServerID, String clientServerSecrect, String accountType, boolean enabled) {
+        this.guid = guid;
+        this.appId = appId;
+        this.appSecret = appSecret;
+        this.accessTokenUrl = accessTokenUrl;
+        this.jsSDKTicketUrl = jsSDKTicketUrl;
+        this.clientServerID = clientServerID;
+        this.clientServerSecrect = clientServerSecrect;
+        this.accountType = accountType;
         this.enabled = enabled;
     }
 
@@ -75,5 +92,35 @@ public class WechatAccountCommand {
         this.clientGuid = clientGuid;
     }
 
+    public String getAccessTokenUrl() {
+        return accessTokenUrl;
+    }
 
+    public void setAccessTokenUrl(String accessTokenUrl) {
+        this.accessTokenUrl = accessTokenUrl;
+    }
+
+    public String getJsSDKTicketUrl() {
+        return jsSDKTicketUrl;
+    }
+
+    public void setJsSDKTicketUrl(String jsSDKTicketUrl) {
+        this.jsSDKTicketUrl = jsSDKTicketUrl;
+    }
+
+    public String getClientServerID() {
+        return clientServerID;
+    }
+
+    public void setClientServerID(String clientServerID) {
+        this.clientServerID = clientServerID;
+    }
+
+    public String getClientServerSecrect() {
+        return clientServerSecrect;
+    }
+
+    public void setClientServerSecrect(String clientServerSecrect) {
+        this.clientServerSecrect = clientServerSecrect;
+    }
 }
