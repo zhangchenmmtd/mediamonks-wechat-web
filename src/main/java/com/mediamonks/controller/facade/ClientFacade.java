@@ -27,7 +27,7 @@ import java.util.List;
 @Service("clientFacade")
 public class ClientFacade {
     @Autowired
-    private ClientRepository clientRepository;
+    protected ClientRepository clientRepository;
 
     public ClientsGroupCommand getAll(String pageNumber) {
         int page = Integer.valueOf(pageNumber);
@@ -134,7 +134,7 @@ public class ClientFacade {
         weChatAccount.changeUrls(accessTokenUrl, jsSDKTicketUrl);
         try {
             weChatAccount.changeAccountType(AccountType.valueOf(accountType));
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
