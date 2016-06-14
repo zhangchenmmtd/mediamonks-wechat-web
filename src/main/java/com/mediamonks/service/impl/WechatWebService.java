@@ -35,7 +35,7 @@ import java.util.UUID;
 public class WechatWebService implements WechatService{
     private final Logger log = LoggerFactory.getLogger(this.getClass());
     @Autowired
-    private WechatAccountRepository wechatAccountRepository;
+    protected WechatAccountRepository wechatAccountRepository;
 
 
     @Override
