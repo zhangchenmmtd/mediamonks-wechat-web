@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
  * Created by zhangchen on 16/6/8.
  */
 public class AESTest {
-    String text = "{'wechatId':'57b0d57f-e458-432a-875a-c413f1cc0ed4','url':'http://www.google.com'}";
+    String text = "{'wechatId':'b83b0ab2-68f1-4a54-82ae-4724f3646053','url':'http://www.google.com'}";
 
     @Test
     public void testGetKey() throws Exception {
