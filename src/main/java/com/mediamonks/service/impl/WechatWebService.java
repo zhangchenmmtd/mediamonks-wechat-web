@@ -91,7 +91,11 @@ public class WechatWebService implements WechatService{
         String nonString = UUID.randomUUID().toString();
         long timestamp = System.currentTimeMillis() / 1000;
 
-        String encodeString = "jsapi_ticket=" + ticket + "&noncestr=" + nonString + "&timestamp=" + timestamp + "&url=" + url;
+        String encodeString =
+                        "jsapi_ticket=" + ticket +
+                        "&noncestr=" + nonString +
+                        "&timestamp=" + timestamp +
+                        "&url=" + url;
 
         String signature = StringUtils.encode(encodeString);
 
