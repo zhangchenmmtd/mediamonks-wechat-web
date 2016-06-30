@@ -1,14 +1,18 @@
 package com.mediamonks.utils;
 
 import org.junit.Test;
+import sun.misc.BASE64Encoder;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.SecretKey;
+import javax.crypto.*;
+import javax.crypto.spec.SecretKeySpec;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.SignatureException;
+import java.util.Base64;
+import java.util.Formatter;
 
 import static org.junit.Assert.*;
 
@@ -38,7 +42,7 @@ public class AESTest {
         assertNotNull(encrypt);
 
         String decrypt = AES.decrypt(encrypt);
-        assertEquals(text,decrypt);
+        assertEquals(text, decrypt);
     }
 
     @Test
@@ -51,4 +55,61 @@ public class AESTest {
         }
 
     }
+
+    private static final String HMAC_SHA1_ALGORITHM = "HmacSHA1";
+
+    /**
+     * Signature with following parameters will be
+     * VWuHWlrh8JLmsRIuLyQ+qLgunCA=
+     * @param args
+     */
+    public static void main(String[] args) {
+        String dataString = "";
+        try {
+            dataString += URLEncoder.encode("activityId", "utf-8") + "=" + URLEncoder.encode("1", "utf-8");
+            dataString += "&" + URLEncoder.encode("clientKey", "utf-8") + "=" + URLEncoder.encode("sd325SFV3sd23g2", "utf-8");
+            dataString += "&" + URLEncoder.encode("nonce", "utf-8") + "=" + URLEncoder.encode("dg2geh3qhe2gba34hah23", "utf-8");
+            dataString += "&" + URLEncoder.encode("participantId", "utf-8") + "=" + URLEncoder.encode("1", "utf-8");
+            dataString += "&" + URLEncoder.encode("points", "utf-8") + "=" + URLEncoder.encode("20", "utf-8");
+            dataString += "&" + URLEncoder.encode("timestamp", "utf-8") + "=" + URLEncoder.encode("1467297198", "utf-8");
+
+
+            System.out.println(dataString);
+            String finalString = "POST&"
+                    + URLEncoder.encode("http://adidas-ros.local/api/participants/score", "utf-8")
+                    + "&"
+                    + URLEncoder.encode(dataString, "utf-8");
+            System.out.println(finalString);
+            System.out.println(calculateRFC2104HMAC(finalString, "z_TxyIy737ibtC-6ETw_0jSD8IrSoL7OQ_MOoQovDXqYeTqt-6"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (SignatureException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static String calculateRFC2104HMAC(String data, String key)
+            throws java.security.SignatureException {
+        String result;
+        try {
+
+            // get an hmac_sha1 key from the raw key bytes
+            SecretKeySpec signingKey = new SecretKeySpec(key.getBytes(), HMAC_SHA1_ALGORITHM);
+
+            // get an hmac_sha1 Mac instance and initialize with the signing key
+            Mac mac = Mac.getInstance(HMAC_SHA1_ALGORITHM);
+            mac.init(signingKey);
+
+            // compute the hmac on input data bytes
+            byte[] rawHmac = mac.doFinal(data.getBytes());
+
+            // base64-encode the hmac
+            result = new BASE64Encoder().encode(rawHmac);
+
+        } catch (Exception e) {
+            throw new SignatureException("Failed to generate HMAC : " + e.getMessage());
+        }
+        return result;
+    }
 }
+
